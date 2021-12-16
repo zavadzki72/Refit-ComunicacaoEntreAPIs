@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PlayerAPI.Model;
 
@@ -5,6 +6,7 @@ namespace PlayerAPI.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    [Authorize]
     public class PlayerController : ControllerBase
     {
         readonly List<Player> _players = new()

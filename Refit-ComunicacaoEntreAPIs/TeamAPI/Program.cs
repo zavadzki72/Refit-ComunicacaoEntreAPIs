@@ -12,7 +12,9 @@ builder.Services.AddSwaggerGen();
 
 builder.Services
     .AddRefitClient<IPlayerService>()
-    .ConfigureHttpClient(x => x.BaseAddress = new Uri("https://localhost:7012"));
+    .ConfigureHttpClient(x => {
+        x.BaseAddress = new Uri("https://localhost:7012");
+    });
 
 
 var app = builder.Build();

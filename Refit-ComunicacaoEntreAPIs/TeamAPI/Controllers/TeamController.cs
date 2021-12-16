@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Refit;
 using TeamAPI.Model;
 using TeamAPI.Services;
 
@@ -18,7 +19,16 @@ namespace TeamAPI.Controllers
         [HttpGet]
         public async Task<IActionResult> Get([FromQuery] string team)
         {
-            var resultPlayer = await _playerService.GetPlayersOfTeam(team);
+            var token = await _playerService.Authorize("palmeiras_nao_tem_mundial");
+
+            var playerService = RestService.For<IPlayerService>("https://localhost:7012",
+                new RefitSettings 
+                {
+                    AuthorizationHeaderValueGetter = () => Task.FromResult(token.Content)
+                }
+            );
+
+            var resultPlayer = await playerService.GetPlayersOfTeam(team);
 
             if (!resultPlayer.IsSuccessStatusCode)
             {
